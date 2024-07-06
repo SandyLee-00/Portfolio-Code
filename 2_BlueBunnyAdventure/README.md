@@ -1,5 +1,5 @@
 # 깃허브 레포지토리
-https://github.com/hajeehoon12/Blue_Bunny_Adventure?tab=readme-ov-file
+https://github.com/hajeehoon12/Blue_Bunny_Adventure
 
 # [B-12조] "Blue_Bunny_Adventure"
 Chapter 3-3 유니티 게임개발 심화
