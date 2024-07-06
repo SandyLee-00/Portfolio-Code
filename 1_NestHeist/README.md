@@ -3,6 +3,7 @@
 진행중인 프로젝트
 
 ### 프로젝트 노션
+https://sandylee-00.notion.site/c9ee5a4b73ec4c069b6c8396ce169274?pvs=4
 
 ### CSV 데이터
 https://docs.google.com/spreadsheets/d/1R4iLaLJ8lnELlVdscLak20TED9WW-hYRkH51aqkHjhM/edit?usp=sharing
