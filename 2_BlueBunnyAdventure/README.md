@@ -99,5 +99,3 @@ https://youtu.be/NUNNsoQKPNc
 ## 회의록
 https://teamsparta.notion.site/18f96f41bcb64153b177ed9da93b319f
 
-## PPT
-[TEAM B12조_블루 버니 어드벤처.pdf](https://github.com/user-attachments/files/15981906/TEAM.B12._.pdf)
