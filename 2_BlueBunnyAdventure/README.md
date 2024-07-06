@@ -1,5 +1,7 @@
-# [B-12조] "Blue_Bunny_Adventure"
-Chapter 3-3 유니티 게임개발 심화
+# 깃허브 레포지토리
+https://github.com/hajeehoon12/Blue_Bunny_Adventure
+
+# "Blue_Bunny_Adventure"
 
 ## 목차
 1. [시연 영상](#시연-영상)
@@ -97,5 +99,3 @@ https://youtu.be/NUNNsoQKPNc
 ## 회의록
 https://teamsparta.notion.site/18f96f41bcb64153b177ed9da93b319f
 
-## PPT
-[TEAM B12조_블루 버니 어드벤처.pdf](https://github.com/user-attachments/files/15981906/TEAM.B12._.pdf)
