@@ -1,8 +1,7 @@
 # 깃허브 레포지토리
 https://github.com/hajeehoon12/Blue_Bunny_Adventure
 
-# [B-12조] "Blue_Bunny_Adventure"
-Chapter 3-3 유니티 게임개발 심화
+# "Blue_Bunny_Adventure"
 
 ## 목차
 1. [시연 영상](#시연-영상)
