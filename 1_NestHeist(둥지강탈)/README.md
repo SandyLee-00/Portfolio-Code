@@ -5,7 +5,7 @@
 진행중인 프로젝트 입니다
 
 ### 프로젝트 노션
-https://sandylee-00.notion.site/c9ee5a4b73ec4c069b6c8396ce169274?pvs=4
+https://sandylee-00.notion.site/36f42791d4be40caa1943d72aca3aeee?pvs=4
 
 팀원 -> 이서영 -> backlinks 로 작성한 글을 확인 가능합니다
 
