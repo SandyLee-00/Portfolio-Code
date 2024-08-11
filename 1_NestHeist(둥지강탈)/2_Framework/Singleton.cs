@@ -55,4 +55,12 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     protected virtual void Update()
     {
     }
+
+    protected virtual void OnEnable()
+    {
+    }
+
+    protected virtual void OnDisable()
+    {
+    }
 }

@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 using static Define;
 
 /// <summary>
 /// 시작되면 데이터 로드해서 딕셔너리로 만들어주는 클래스
-/// TODO : CSV 바로 로드 방식을 SO로 바꾸는 툴 제작하기 
 /// 인스펙터에서 보기 편하게 MonoBehaviour 붙혔다. 나중에 제거하기
 /// </summary>
 public class CSVLoader : MonoBehaviour
@@ -37,13 +37,17 @@ public class CSVLoader : MonoBehaviour
     public string PlayerLevelStatData = "PlayerLevelStatData";
     public string PlayerLevelUpData = "PlayerLevelUpData";
 
+    public string SubtaskInfoData = "SubtaskInfoData";
+    public string RewardInfoData = "RewardInfoData";
+    public string QuestInfoData = "QuestInfoData";
+
     public Dictionary<string, List<DungeonEggProbabilityData>> MakeDungeonEggProbabilityData()
     {
         List<Dictionary<string, object>> _tempData = CSVReader.Read(_csvPath + $"/{DungeonEggProbabilityData}");
 
         Dictionary<string, List<DungeonEggProbabilityData>> dic = new Dictionary<string, List<DungeonEggProbabilityData>>();
 
-        for(int i = 0; i < _tempData.Count; i++)
+        for (int i = 0; i < _tempData.Count; i++)
         {
             DungeonEggProbabilityData data = new DungeonEggProbabilityData();
 
@@ -51,7 +55,7 @@ public class CSVLoader : MonoBehaviour
             data.EggId = _tempData[i]["EggId"].ToString();
             data.Probability = float.Parse(_tempData[i]["Probability"].ToString());
 
-            if(dic.ContainsKey(data.DungeonId))
+            if (dic.ContainsKey(data.DungeonId))
             {
                 dic[data.DungeonId].Add(data);
             }
@@ -59,6 +63,11 @@ public class CSVLoader : MonoBehaviour
             {
                 dic.Add(data.DungeonId, new List<DungeonEggProbabilityData> { data });
             }
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"DungeonEggProbabilityData");
         }
 
         return dic;
@@ -88,6 +97,11 @@ public class CSVLoader : MonoBehaviour
             dic.Add(data.Id, data);
         }
 
+        if (dic == null)
+        {
+            Logging.LogError($"DungeonInfoData");
+        }
+
         return dic;
     }
 
@@ -115,6 +129,11 @@ public class CSVLoader : MonoBehaviour
             }
         }
 
+        if (dic == null)
+        {
+            Logging.LogError($"DungeonMonsterProbabilityData");
+        }
+
         return dic;
     }
 
@@ -130,12 +149,36 @@ public class CSVLoader : MonoBehaviour
 
             data.Id = _tempData[i]["Id"].ToString();
             data.Name = _tempData[i]["Name"].ToString();
-            data.MonsterId = _tempData[i]["MonsterId"].ToString();
+
+            string temp = _tempData[i]["MonsterIdList"].ToString();
+
+            // 슬라임 알
+            if (data.Id == "EGGSLM01")
+            {
+                // 슬라임 몬스터 리스트 생성
+                List<string> slimeMonsterList = new List<string>();
+                for (int j = 101; j <= 150; j++)
+                {
+                    slimeMonsterList.Add($"MON00{j}");
+                }
+                data.MonsterIdList = slimeMonsterList;
+            }
+            // 슬라임 아닌 일반 알
+            else
+            {
+                data.MonsterIdList = new List<string>(temp.Split(','));
+            }
+
             data.EnvironmentType = (EnvironmentType)Enum.Parse(typeof(EnvironmentType), _tempData[i]["EnvironmentType"].ToString());
             data.HatchTime = int.Parse(_tempData[i]["HatchTime"].ToString());
             data.NeedGauge = int.Parse(_tempData[i]["NeedGauge"].ToString());
 
             dic.Add(data.Id, data);
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"EggInfoData");
         }
 
         return dic;
@@ -144,7 +187,7 @@ public class CSVLoader : MonoBehaviour
     public Dictionary<string, ItemInfoData> MakeItemInfoData()
     {
         List<Dictionary<string, object>> _tempData = CSVReader.Read(_csvPath + $"/{ItemInfoData}");
-            
+
         Dictionary<string, ItemInfoData> dic = new Dictionary<string, ItemInfoData>();
 
         for (int i = 0; i < _tempData.Count; i++)
@@ -158,6 +201,11 @@ public class CSVLoader : MonoBehaviour
             data.Value = int.Parse(_tempData[i]["Value"].ToString());
 
             dic.Add(data.Id, data);
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"ItemInfoData");
         }
 
         return dic;
@@ -177,13 +225,18 @@ public class CSVLoader : MonoBehaviour
             data.Attack = int.Parse(_tempData[i]["Attack"].ToString());
             data.MaxHP = int.Parse(_tempData[i]["MaxHP"].ToString());
             data.Defence = int.Parse(_tempData[i]["Defence"].ToString());
-            data.Avoid = float.Parse(_tempData[i]["Avoid"].ToString());
             data.Critical = float.Parse(_tempData[i]["Critical"].ToString());
             data.CriticalDamage = int.Parse(_tempData[i]["CriticalDamage"].ToString());
             data.WalkSpeed = float.Parse(_tempData[i]["WalkSpeed"].ToString());
 
             dic.Add(data.MonsterId, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterBaseStatData");
+        }
+
         return dic;
     }
 
@@ -193,7 +246,7 @@ public class CSVLoader : MonoBehaviour
 
         Dictionary<string, List<MonsterDropItemData>> dic = new Dictionary<string, List<MonsterDropItemData>>();
 
-        for(int i = 0; i < _tempData.Count; i++)
+        for (int i = 0; i < _tempData.Count; i++)
         {
             MonsterDropItemData data = new MonsterDropItemData();
 
@@ -206,7 +259,7 @@ public class CSVLoader : MonoBehaviour
             data.MaxNum = int.Parse(_tempData[i]["MaxNum"].ToString());
 
 
-            if(dic.ContainsKey(data.MonsterId))
+            if (dic.ContainsKey(data.MonsterId))
             {
                 dic[data.MonsterId].Add(data);
             }
@@ -214,6 +267,11 @@ public class CSVLoader : MonoBehaviour
             {
                 dic.Add(data.MonsterId, new List<MonsterDropItemData> { data });
             }
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterDropItemData");
         }
 
         return dic;
@@ -232,11 +290,56 @@ public class CSVLoader : MonoBehaviour
             data.Id = _tempData[i]["Id"].ToString();
             data.Name = _tempData[i]["Name"].ToString();
             data.Desc = _tempData[i]["Desc"].ToString();
-            data.EnvironmentType = (EnvironmentType)Enum.Parse(typeof(EnvironmentType), _tempData[i]["EnvironmentType"].ToString());
+
+            string temp = _tempData[i]["AttributeType"].ToString();
+            List<string> strings = new List<string>(temp.Split(','));
+            foreach (string type in strings)
+            {
+                switch (type)
+                {
+                    case "물":
+                        data.AttributeTypeList.Add(AttributeType.Water);
+                        break;
+                    case "불":
+                        data.AttributeTypeList.Add(AttributeType.Fire);
+                        break;
+                    case "풀":
+                        data.AttributeTypeList.Add(AttributeType.Grass);
+                        break;
+                    case "땅":
+                        data.AttributeTypeList.Add(AttributeType.Ground);
+                        break;
+                    case "얼음":
+                        data.AttributeTypeList.Add(AttributeType.Ice);
+                        break;
+                    case "전기":
+                        data.AttributeTypeList.Add(AttributeType.Electric);
+                        break;
+                    case "드래곤":
+                        data.AttributeTypeList.Add(AttributeType.Dragon);
+                        break;
+                    case "어둠":
+                        data.AttributeTypeList.Add(AttributeType.Dark);
+                        break;
+                    case "노말":
+                        data.AttributeTypeList.Add(AttributeType.Normal);
+                        break;
+                    default:
+                        Logging.LogError($"MonsterInfoData AttributeType Error");
+                        break;
+                }
+            }
+
             data.AttackType = (AttackType)Enum.Parse(typeof(AttackType), _tempData[i]["AttackType"].ToString());
 
             dic.Add(data.Id, data);
-        }   
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterInfoData");
+        }
+
         return dic;
     }
 
@@ -254,13 +357,18 @@ public class CSVLoader : MonoBehaviour
             data.Attack = int.Parse(_tempData[i]["Attack"].ToString());
             data.MaxHP = int.Parse(_tempData[i]["MaxHP"].ToString());
             data.Defence = int.Parse(_tempData[i]["Defence"].ToString());
-            data.Avoid = float.Parse(_tempData[i]["Avoid"].ToString());
             data.Critical = float.Parse(_tempData[i]["Critical"].ToString());
             data.CriticalDamage = int.Parse(_tempData[i]["CriticalDamage"].ToString());
             data.WalkSpeed = float.Parse(_tempData[i]["WalkSpeed"].ToString());
 
             dic.Add(data.MonsterId, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterIVStatData");
+        }
+
         return dic;
     }
 
@@ -278,13 +386,18 @@ public class CSVLoader : MonoBehaviour
             data.Attack = int.Parse(_tempData[i]["Attack"].ToString());
             data.MaxHP = int.Parse(_tempData[i]["MaxHP"].ToString());
             data.Defence = int.Parse(_tempData[i]["Defence"].ToString());
-            data.Avoid = float.Parse(_tempData[i]["Avoid"].ToString());
             data.Critical = float.Parse(_tempData[i]["Critical"].ToString());
             data.CriticalDamage = int.Parse(_tempData[i]["CriticalDamage"].ToString());
             data.WalkSpeed = float.Parse(_tempData[i]["WalkSpeed"].ToString());
 
             dic.Add(data.MonsterId, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterLevelStatData");
+        }
+
         return dic;
     }
 
@@ -303,6 +416,12 @@ public class CSVLoader : MonoBehaviour
 
             dic.Add(data.Level, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterLevelUpData");
+        }
+
         return dic;
     }
 
@@ -320,13 +439,18 @@ public class CSVLoader : MonoBehaviour
             data.Attack = int.Parse(_tempData[i]["Attack"].ToString());
             data.MaxHP = int.Parse(_tempData[i]["MaxHP"].ToString());
             data.Defence = int.Parse(_tempData[i]["Defence"].ToString());
-            data.Avoid = float.Parse(_tempData[i]["Avoid"].ToString());
             data.Critical = float.Parse(_tempData[i]["Critical"].ToString());
             data.CriticalDamage = int.Parse(_tempData[i]["CriticalDamage"].ToString());
             data.WalkSpeed = float.Parse(_tempData[i]["WalkSpeed"].ToString());
 
             dic.Add(data.MonsterId, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterRankStatData");
+        }
+
         return dic;
     }
 
@@ -346,9 +470,51 @@ public class CSVLoader : MonoBehaviour
             data.Range = float.Parse(_tempData[i]["Range"].ToString());
             data.CoolDown = float.Parse(_tempData[i]["CoolDown"].ToString());
             data.CastTime = float.Parse(_tempData[i]["CastTime"].ToString());
+            data.DamageMulti = float.Parse(_tempData[i]["DamageMulti"].ToString());
+
+            string type = _tempData[i]["AttributeType"].ToString();
+            switch (type)
+            {
+                case "물":
+                    data.AttributeType = AttributeType.Water;
+                    break;
+                case "불":
+                    data.AttributeType = AttributeType.Fire;
+                    break;
+                case "풀":
+                    data.AttributeType = AttributeType.Grass;
+                    break;
+                case "땅":
+                    data.AttributeType = AttributeType.Ground;
+                    break;
+                case "얼음":
+                    data.AttributeType = AttributeType.Ice;
+                    break;
+                case "전기":
+                    data.AttributeType = AttributeType.Electric;
+                    break;
+                case "드래곤":
+                    data.AttributeType = AttributeType.Dragon;
+                    break;
+                case "어둠":
+                    data.AttributeType = AttributeType.Dark;
+                    break;
+                case "노말":
+                    data.AttributeType = AttributeType.Normal;
+                    break;
+                default:
+                    Logging.LogError($"MonsterSkillInfoData AttributeType Error");
+                    break;
+            }
 
             dic.Add(data.Id, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"MonsterSkillInfoData");
+        }
+
         return dic;
     }
 
@@ -358,7 +524,7 @@ public class CSVLoader : MonoBehaviour
 
         Dictionary<string, PlayerBaseStatData> dic = new Dictionary<string, PlayerBaseStatData>();
 
-        for(int i = 0; i < _tempData.Count; i++)
+        for (int i = 0; i < _tempData.Count; i++)
         {
             PlayerBaseStatData data = new PlayerBaseStatData();
 
@@ -369,11 +535,16 @@ public class CSVLoader : MonoBehaviour
 
             dic.Add(data.PlayerId, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"PlayerBaseStatData");
+        }
+
         return dic;
     }
 
     /// <summary>
-    /// TODO : 플레이어 캐릭터 추가되면 몬스터 Info처럼 캐릭터 이름, 설명 추가하기 
     /// </summary>
     /// <returns></returns>
     public Dictionary<string, PlayerInfoData> MakePlayerInfoData()
@@ -382,13 +553,18 @@ public class CSVLoader : MonoBehaviour
 
         Dictionary<string, PlayerInfoData> dic = new Dictionary<string, PlayerInfoData>();
 
-        for(int i = 0; i < _tempData.Count; i++)
+        for (int i = 0; i < _tempData.Count; i++)
         {
             PlayerInfoData data = new PlayerInfoData();
 
             data.Id = _tempData[i]["Id"].ToString();
 
             dic.Add(data.Id, data);
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"PlayerInfoData");
         }
 
         return dic;
@@ -400,7 +576,7 @@ public class CSVLoader : MonoBehaviour
 
         Dictionary<string, PlayerLevelStatData> dic = new Dictionary<string, PlayerLevelStatData>();
 
-        for(int i = 0; i < _tempData.Count; i++)
+        for (int i = 0; i < _tempData.Count; i++)
         {
             PlayerLevelStatData data = new PlayerLevelStatData();
 
@@ -411,6 +587,12 @@ public class CSVLoader : MonoBehaviour
 
             dic.Add(data.PlayerId, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"PlayerLevelStatData");
+        }
+
         return dic;
     }
 
@@ -420,7 +602,7 @@ public class CSVLoader : MonoBehaviour
 
         Dictionary<int, PlayerLevelUpData> dic = new Dictionary<int, PlayerLevelUpData>();
 
-        for(int i = 0; i < _tempData.Count; i++)
+        for (int i = 0; i < _tempData.Count; i++)
         {
             PlayerLevelUpData data = new PlayerLevelUpData();
 
@@ -429,6 +611,135 @@ public class CSVLoader : MonoBehaviour
 
             dic.Add(data.Level, data);
         }
+
+        if (dic == null)
+        {
+            Logging.LogError($"PlayerLevelUpData");
+        }
+
+        return dic;
+    }
+
+    public Dictionary<string, SubtaskInfoData> MakeTaskInfoData()
+    {
+        List<Dictionary<string, object>> _tempData = CSVReader.Read(_csvPath + $"/{SubtaskInfoData}");
+
+        Dictionary<string, SubtaskInfoData> dic = new Dictionary<string, SubtaskInfoData>();
+
+        for (int i = 0; i < _tempData.Count; i++)
+        {
+            SubtaskInfoData data = new SubtaskInfoData();
+
+            data.Id = _tempData[i]["Id"].ToString();
+            data.Desc = _tempData[i]["Desc"].ToString();
+
+            string temp = _tempData[i]["Targets"].ToString();
+            List<string> strings = new List<string>(temp.Split(','));
+            foreach (string target in strings)
+            {
+                SubtaskTarget subtaskTarget = new StringTarget(target);
+                data.TargetList.Add(subtaskTarget);
+            }
+
+            data.NeedSuccessToCompleted = int.Parse(_tempData[i]["NeedSuccessToCompleted"].ToString());
+
+            dic.Add(data.Id, data);
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"SubtaskInfoData");
+        }
+
+        return dic;
+    }
+
+    public Dictionary<string, RewardInfoData> MakeRewardInfoData()
+    {
+        List<Dictionary<string, object>> _tempData = CSVReader.Read(_csvPath + $"/{RewardInfoData}");
+
+        Dictionary<string, RewardInfoData> dic = new Dictionary<string, RewardInfoData>();
+
+        for (int i = 0; i < _tempData.Count; i++)
+        {
+            RewardInfoData data = new RewardInfoData();
+
+            data.Id = _tempData[i]["Id"].ToString();
+            data.RewardItemId = _tempData[i]["RewardItemId"].ToString();
+            data.Quantity = int.Parse(_tempData[i]["Quantity"].ToString());
+
+            dic.Add(data.Id, data);
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"RewardInfoData");
+        }
+
+        return dic;
+    }
+
+    public Dictionary<string, QuestInfoData> MakeQuestInfoData()
+    {
+        List<Dictionary<string, object>> _tempData = CSVReader.Read(_csvPath + $"/{QuestInfoData}");
+
+        Dictionary<string, QuestInfoData> dic = new Dictionary<string, QuestInfoData>();
+
+        for (int i = 0; i < _tempData.Count; i++)
+        {
+            QuestInfoData data = new QuestInfoData();
+
+            data.Id = _tempData[i]["Id"].ToString();
+            data.Name = _tempData[i]["Name"].ToString();
+            data.Desc = _tempData[i]["Desc"].ToString();
+
+            string category = _tempData[i]["Category"].ToString();
+            if (category == "던전")
+            {
+                data.Category = QuestCategory.Dungeon;
+            }
+            else if (category == "성장")
+            {
+                data.Category = QuestCategory.Growth;
+            }
+            else if (category == "일일")
+            {
+                data.Category = QuestCategory.Daily;
+            }
+            else
+            {
+                Logging.LogError($"QuestInfoData Category Error");
+            }
+
+            data.TaskDic = new Dictionary<string, SubtaskInfoData>();
+
+            string temp = _tempData[i]["SubtaskIds"].ToString();
+            List<string> strings = new List<string>(temp.Split(','));
+            foreach (string id in strings)
+            {
+                SubtaskInfoData taskdata = DataManager.Instance.BaseData.Task[id];
+                taskdata.QuestId = data.Id;
+                data.TaskDic.Add(taskdata.Id, taskdata);
+            }
+
+            data.RewardDic = new Dictionary<string, RewardInfoData>();
+            string temp2 = _tempData[i]["RewardIds"].ToString();
+            List<string> strings2 = new List<string>(temp2.Split(','));
+            foreach (string id in strings2)
+            {
+                RewardInfoData rewarddata = DataManager.Instance.BaseData.Reward[id];
+                rewarddata.QuestId = data.Id;
+                data.RewardDic.Add(rewarddata.Id, rewarddata);
+            }
+
+            dic.Add(data.Id, data);
+        }
+
+        if (dic == null)
+        {
+            Logging.LogError($"QuestInfoData");
+        }
+
         return dic;
     }
 }
