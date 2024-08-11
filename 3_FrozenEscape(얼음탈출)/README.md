@@ -2,6 +2,8 @@
 https://github.com/SandyLee-00/Unity_PuzzlePlatformer
 
 # ❄ Frozen Escape ❄
+![화면 캡처 2024-07-06 195355](https://github.com/SandyLee-00/Portfolio/assets/42234609/19265f4e-7ce5-4122-b25d-101ac9a8db78)
+
   
 ## 📋 목차
 - 🖥 프로젝트 소개
