@@ -2,8 +2,8 @@
 모바일 2D
 던전에서 알을 훔쳐 달아나고 부화시키는 게임입니다. 
 
-### 진행 과정 기록 
-https://sandylee-00.notion.site/9044b82f7a3a45bfaf4bd6507d8f4e14?v=e63170bd7a68495a91450ecebf17f881&pvs=4
+### 프로젝트 진행 과정 기록 노션 페이지
+https://sandylee-00.notion.site/NestHeist-66b58c801f5b4433b653c61efa8ff2e8?pvs=4
 
 
 ### CSV 데이터
