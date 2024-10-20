@@ -1,0 +1,11 @@
+Id,Desc,Targets,NeedSuccessToCompleted,QuestId = 코드에서 넣어주기,중복된 테스크여도 Task 아이디는 다르게 각자 만들어야한다. 
+TSK00001,몬스터를 공격해 무찌르자!,Monster,5,,
+TSK00002,맵 이동 포탈을 타자!,Portal,1,,
+TSK00003,영양제를 사용하자!,"SmallNutrient,MediumNutrient,LargeNutrient",1,,
+TSK00004,알을 부화시키자!,Egg,1,,
+TSK00005,골드를 획득하자!,Gold,10,,
+TSK00006,출석체크를 하자!,Login,1,,
+TSK00007,매일 몬스터를 공격해 무찌르자!,Monster,5,,
+TSK00008,받은 보상으로 알을 부화시켜 던전을 돌자!,Login,1,,
+TSK00009,받은 보상으로 알을 부화시켜 던전을 돌자!,Login,1,,
+TSK00010,받은 보상으로 알을 부화시켜 던전을 돌자!,Login,1,,
