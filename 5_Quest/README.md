@@ -1,2 +1,1 @@
-# Portfolio
-000211 이서영 포트폴리오 코드 저장소입니다.
+### 노션 기록 페이지 - 퀘스트 [[Link]](https://sandylee-00.notion.site/10de6068c74380ab921fe33e3807d0af?v=125e6068c74380af879c000cd4e4ee8b)
