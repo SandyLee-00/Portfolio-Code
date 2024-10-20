@@ -1,4 +1,0 @@
-Id,Name,MonsterIdList,EnvironmentType,HatchTime,NeedGauge
-EGG00001,따뜻한 알,MON00001,0,2,6
-EGG00002,차가운 알,MON00002,0,3,7
-EGGSLM01,슬라임 알,슬라임 몬스터들 부화 끝나고 정해줄 때 리스트에서 랜덤으로 정해주기   - 여기만 코드에서 파싱할 때 MON00101 ~ MON00150 넣기,0,1,3
